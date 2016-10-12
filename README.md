@@ -1,4 +1,2 @@
-# gitbasics
-some demo of gitbasics
-the 2nd line
-the 3rd line
+# RxJS Typescript Starter
+Use this as the starter point for new rxjs-typescript projects.
