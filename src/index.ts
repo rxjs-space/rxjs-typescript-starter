@@ -8,4 +8,4 @@ Observable.of(1)
 
 // import './naive-observable';
 // import './redux-mock';
-import './upload';
+import './redux-mock-async';
