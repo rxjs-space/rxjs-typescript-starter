@@ -32,8 +32,8 @@ type State = number;
 type ChangeFn = (state: State) => State;
 
 /*
- 创建action$$，负责转发action
- 创建state$$，负责转发state，并留存最近的state
+ 创建action$$，负责转发action。
+ 创建state$$，负责转发state，并留存最近的state，初始值为0。
  立即用console.log订阅到state$$，这样避免漏数据。
  在console.log订阅到state$$之后，state$$会立即将留存的state推给console.log，在console上看到0。
 */
