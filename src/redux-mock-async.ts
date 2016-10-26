@@ -19,7 +19,8 @@ const errorE = document.createElement('div'); // upload failed, show error, 2 se
 errorE.innerText = 'upload failed.'
 
 /*
-  定义interfaces和action常量
+  定义interfaces, types
+  定义字符串常量，如 const A = 'A'，可避免后面代码中使用字符'A'，不会写错  
 */
 type ActionType = 'UPLOAD_START' | 'UPLOAD_COMPLETE' | 'UPLOAD_FAIL'
 interface Action {
