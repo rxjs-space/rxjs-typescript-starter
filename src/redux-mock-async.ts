@@ -13,7 +13,7 @@ sectionE.appendChild(uploadButtonE);
 
 const uploadingE = document.createElement('div'); // uploading... message
 uploadingE.innerText = 'uploading...';
-const previewE = document.createElement('div'); // upload finished, show preview
+const previewE = document.createElement('div'); // upload completed, show preview
 previewE.innerText = 'uploaded. this is the preview.'
 const errorE = document.createElement('div'); // upload failed, show error, 2 sec later, hide error
 errorE.innerText = 'upload failed.'
@@ -21,16 +21,23 @@ errorE.innerText = 'upload failed.'
 /*
   定义interfaces和action常量
 */
-type ActionType = 'UPLOAD_START' | 'UPLOAD_FINISH' | 'UPLOAD_FAIL'
+type ActionType = 'UPLOAD_START' | 'UPLOAD_COMPLETE' | 'UPLOAD_FAIL'
 interface Action {
   type: ActionType
 }
 const UPLOAD_START: ActionType = 'UPLOAD_START';
-const UPLOAD_FINISH: ActionType = 'UPLOAD_FINISH';
+const UPLOAD_COMPLETE: ActionType = 'UPLOAD_COMPLETE';
 const UPLOAD_FAIL: ActionType = 'UPLOAD_FAIL';
+
+type uploadState = null | 'STARTED' | 'COMPLETED' | 'FAILED';
 interface State {
-  upload: null | 'started' | 'finished' | 'failed'
+  upload: uploadState
 } // 这个state在本文中没啥用，异步处理的依据是action，不是state
+
+const STARTED: uploadState = 'STARTED';
+const COMPLETED: uploadState = 'COMPLETED';
+const FAILED: uploadState = 'FAILED';
+
 type ChangeFn = (state: State) => State;
 
 /*
@@ -43,13 +50,17 @@ const ultimate_: Subscription = state$$.subscribe(console.log); // will log 0 im
 
 const changeFn$: Observable<ChangeFn> = action$$
   .map((action: Action) => {
+    let newUploadState: uploadState;
     switch (action.type) {
       case UPLOAD_START:
-        return (state: State) => Object.assign({}, state, {upload: 'started'});
-      case UPLOAD_FINISH:
-        return (state: State) => Object.assign({}, state, {upload: 'finished'});
+        newUploadState = STARTED;
+        return (state: State): State => Object.assign({}, state, {upload: newUploadState});
+      case UPLOAD_COMPLETE:
+        newUploadState = COMPLETED
+        return (state: State) => Object.assign({}, state, {upload: newUploadState});
       case UPLOAD_FAIL:
-        return (state: State) => Object.assign({}, state, {upload: 'failed'});
+        newUploadState = FAILED
+        return (state: State) => Object.assign({}, state, {upload: newUploadState});
       default:
         return (state: State) => state;
     }
@@ -89,9 +100,9 @@ const uploadHttp$ = Observable.create((observer: any) => {
 })
 
 const uploadHttpObserver = {
-  next: () => action$$.next({type: UPLOAD_FINISH}),
+  next: () => action$$.next({type: UPLOAD_COMPLETE}),
   error: () => action$$.next({type: UPLOAD_FAIL})
-} // 结果为成功时，调用nextFn，即推送UPLOAD_FINISH给action$$
+} // 结果为成功时，调用nextFn，即推送UPLOAD_COMPLETE给action$$
 
 /*
   定义按钮click触发的处理
@@ -105,10 +116,10 @@ const uploadButtonEClick$ = Observable.fromEvent(uploadButtonE, 'click')
   })
 
 /*
-  定义action为UPLOAD_FINISH时的处理
+  定义action为UPLOAD_COMPLETE时的处理
 */
-const uploadFinish$ = action$$
-  .filter(action => action.type === UPLOAD_FINISH)
+const uploadComplete$ = action$$
+  .filter(action => action.type === UPLOAD_COMPLETE)
   .do(() => {
     try {
       sectionE.removeChild(uploadingE); // 隐藏uploading...
@@ -143,6 +154,6 @@ const uploadFail$ = action$$
 const upload_ = Observable.merge(
   uploadButtonEClick$,
   uploadFail$,
-  uploadFinish$
+  uploadComplete$
 )
   .subscribe();
