@@ -2,10 +2,10 @@ import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/scan';
+import 'rxjs/add/operator/map';
 
 /*
 
@@ -32,7 +32,7 @@ type State = number;
 type ChangeFn = (state: State) => State;
 
 /*
- 创建action$$，负责转发action。
+ 创建action$$，负责转发action
  创建state$$，负责转发state，并留存最近的state，初始值为0。
  立即用console.log订阅到state$$，这样避免漏数据。
  在console.log订阅到state$$之后，state$$会立即将留存的state推给console.log，在console上看到0。
@@ -57,10 +57,10 @@ const changeFn$: Observable<ChangeFn> = action$$
   })
 
 /*
-  state$将changFn递归（scan）成state，，state初始为0。
+  state$将changFn递归（scan）成state，，state初始为state$$的当前数值，即state$$.getValue()。
 */
 const state$: Observable<State> = changeFn$
-  .scan((state, changeFn) => changeFn(state), 0)
+  .scan((state, changeFn) => changeFn(state), state$$.getValue())
 
 /*
   用state$$订阅state$，state$开始向state$$推送数据
@@ -93,16 +93,20 @@ section.appendChild(decButton);
 
 /*
   创建click事件Observable，每次点按会推送一个action给action$$。
-  立即调用subscribe()，以启动Observable，这里不必制定任何observer。
+  而后合并所有的click$至一个observable，并用subscribe()启动运行。
 */
-Observable.fromEvent(incButton, 'click')
-  .map(() => action$$.next({type: INCREASE})).subscribe()
-Observable.fromEvent(decButton, 'click')
-  .map(() => action$$.next({type: DECREASE})).subscribe()
+const incButtonClick$ = Observable.fromEvent(incButton, 'click')
+  .map(():void => action$$.next({type: INCREASE}))
+const decButtonClick$ = Observable.fromEvent(decButton, 'click')
+  .map(():void => action$$.next({type: DECREASE}))
+
+const clicks_ = Observable.merge(incButtonClick$, decButtonClick$)
+  .subscribe()
+
 
 
 /*
-
+// redux code example
 // from https://github.com/reactjs/redux
 
 import { createStore } from 'redux'
