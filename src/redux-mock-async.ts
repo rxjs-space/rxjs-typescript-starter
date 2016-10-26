@@ -14,9 +14,9 @@ sectionE.appendChild(uploadButtonE);
 const uploadingE = document.createElement('div'); // uploading... message
 uploadingE.innerText = 'uploading...';
 const previewE = document.createElement('div'); // upload completed, show preview
-previewE.innerText = 'uploaded. this is the preview.'
+previewE.innerText = 'upload completed. this is the preview.'
 const errorE = document.createElement('div'); // upload failed, show error, 2 sec later, hide error
-errorE.innerText = 'upload failed.'
+errorE.innerText = 'upload failed. please try again later.'
 
 /*
   定义interfaces, types
