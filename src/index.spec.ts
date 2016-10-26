@@ -1,12 +1,14 @@
 import { Observable, TestScheduler } from 'rxjs';
 
 describe('Observable.interval', () => {
-  it('should emit the first value at timeFrame x (x is the interval)', () => {
-    const scheduler = new TestScheduler((a, b) => expect(a).toEqual(b));
-    const values = {a: 0, b: 1, c: 2, d: 3}
-    const expectedStream = '--a-b-c-(d|)'
-    const $ToTest$ = Observable.interval(20, scheduler).take(4)
-    scheduler.expectObservable($ToTest$).toBe(expectedStream, values)
-    scheduler.flush();
-  })
+  it('should create an observable emitting periodically', () => {
+    const testScheduler = new TestScheduler((a, b) => expect(a).toEqual(b));
+    const e1 = Observable.interval(20, testScheduler)
+      .take(6) // make it actually finite, so it can be rendered
+      .concat(Observable.never()); // but pretend it's infinite by not completing
+    const expected = '--a-b-c-d-e-f-';
+    const values = {a: 0, b: 1, c: 2, d: 3, e: 4, f: 5, };
+    testScheduler.expectObservable(e1).toBe(expected, values);
+    testScheduler.flush();
+  });
 })
