@@ -68,6 +68,7 @@ const changeFn$: Observable<ChangeFn> = action$$
     }
   })
 
+
 /*
   state$将changeFn "scan成" state，state初始为state$$的当前数值，即state$$.getValue()。
   state$不会自动运行。
