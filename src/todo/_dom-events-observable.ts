@@ -70,7 +70,7 @@ const editDblClick$ = domDblClick$$
     const enterPressOnEditingSubInput$ = Observable.fromEvent(document, 'keyup')
       .filter((e: {keyCode: number}) => document.activeElement === elem && e.keyCode === 13).take(1);
     // 当在elem以外点击鼠标时，开始保存
-    const editLeaveClick$ = domClick$.filter((e: any) => (e.target.parentElement !== elem.parentElement) && (e.target !== elem.parentElement)).take(1)
+    const editLeaveClick$ = domClick$$.filter((e: any) => (e.target.parentElement !== elem.parentElement) && (e.target !== elem.parentElement)).take(1)
     // 当按下保存按钮时，开始保存
     const confirmButtonClick$ = Observable.fromEvent(elem.nextSibling, 'click').take(1)
     return Observable.merge(enterPressOnEditingSubInput$, editLeaveClick$, confirmButtonClick$)
