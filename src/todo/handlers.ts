@@ -1,7 +1,11 @@
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
+import * as http from './_http';
+
 
 import { stateInit, Action, State, ChangeFn, 
+  GET_ALL_START, GET_ALL_COMPLETE, GET_ALL_FAIL, 
+  GET_ONE_START, GET_ONE_COMPLETE, GET_ONE_FAIL, 
   ADD_ITEM_START, ADD_ITEM_COMPLETE, ADD_ITEM_FAIL, 
   DELETE_ITEM_START, DELETE_ITEM_COMPLETE, DELETE_ITEM_FAIL,
   EDIT_ITEM_SAVE_START, EDIT_ITEM_SAVE_COMPLETE, EDIT_ITEM_SAVE_FAIL, 
@@ -31,21 +35,55 @@ const fakeHttp$Fac = (payload: any) => {
   })
 }
 
+const GET_ALL_START_handler = (action: Action): ChangeFn => {
+  statusElem.innerHTML = 'fetching data from server ...';
+  http.getAll$Fac().subscribe((response: any) => {
+    const list: Item[] = JSON.parse(response[2])
+    action$$.next({
+      type: GET_ALL_COMPLETE,
+      payload: {list}
+    })
+  }, (error) => {
+    action$$.next({
+      type: GET_ALL_FAIL,
+      payload: {error}
+    })
+  })
+  return defaultChangeFn(action)
+}
+
+const GET_ALL_COMPLETE_handler = (action: Action): ChangeFn => {
+  statusElem.innerHTML = 'data received successfully.';
+  clearStatusElem();
+  const list = action.payload.list;
+  return (state: State): State => Object.assign({}, state, {
+    items: list
+  })
+}
+
+const GET_ALL_FAIL_handler = (action: Action): ChangeFn => {
+  const error = action.payload.error;
+  statusElem.innerHTML = 
+    `<p>adding item failed due to ${error}.</p>
+    <p>please try again later.</p>`;
+  clearStatusElem();
+  return defaultChangeFn(action);
+}
+
 const ADD_ITEM_START_handler = (action: Action): ChangeFn => {
-  const newItem: Item = Object.assign({}, action.payload, {
-    id: Date.now()
-  }); // 以Date.now()作为新项目的id
+  const newItemWithoutId = action.payload;
   statusElem.innerHTML = 'adding a new item ...';
-  fakeHttp$Fac(newItem).take(1).subscribe((v: any) => {
+  http.postForm$Fac(newItemWithoutId).subscribe((response: any) => {
+    const newItemWithId = JSON.parse(response[2]);
     action$$.next({
       type: ADD_ITEM_COMPLETE,
-      payload: newItem
+      payload: newItemWithId
     })
-  }, (error: any) => {
+  }, (error) => {
     action$$.next({
       type: ADD_ITEM_FAIL,
       payload: {
-        data: newItem,
+        data: newItemWithoutId,
         error: error
       }
     })
@@ -164,6 +202,9 @@ const EDIT_ITEM_SAVE_FAIL_handler = (action: Action): ChangeFn => {
 
 export const handlers = (action: Action): ChangeFn => {
   switch (action.type) {
+    case GET_ALL_START: return GET_ALL_START_handler(action);
+    case GET_ALL_COMPLETE: return GET_ALL_COMPLETE_handler(action);
+    case GET_ALL_FAIL: return GET_ALL_FAIL_handler(action);
     case ADD_ITEM_START: return ADD_ITEM_START_handler(action);
     case ADD_ITEM_COMPLETE: return ADD_ITEM_COMPLETE_handler(action);
     case ADD_ITEM_FAIL: return ADD_ITEM_FAIL_handler(action);

@@ -2,14 +2,24 @@
   定义interfaces, types
   定义字符串常量，如 const A = 'A'，可避免后面代码中使用字符'A'，不会写错  
 */
+type ActionTypeGetAll = 'GET_ALL_START' | 'GET_ALL_COMPLETE' | 'GET_ALL_FAIL';
+type ActionTypeGetOne = 'GET_ONE_START' | 'GET_ONE_COMPLETE' | 'GET_ONE_FAIL';
 type ActionTypeAdd = 'ADD_ITEM_START' | 'ADD_ITEM_COMPLETE'| 'ADD_ITEM_FAIL';
 type ActionTypeDelete = 'DELETE_ITEM_START' | 'DELETE_ITEM_COMPLETE' | 'DELETE_ITEM_FAIL';
 type ActionTypeEdit = 'EDIT_ITEM_SAVE_START' | 'EDIT_ITEM_SAVE_COMPLETE' | 'EDIT_ITEM_SAVE_FAIL';
-export type ActionTypeCrud = ActionTypeAdd | ActionTypeDelete | ActionTypeEdit
+export type ActionTypeCrud = ActionTypeAdd | ActionTypeDelete | ActionTypeEdit | ActionTypeGetAll | ActionTypeGetOne;
 export type ActionTypeShow = 'SHOW_ALL' | 'SHOW_UNDONE';
 export type ActionType = ActionTypeCrud | ActionTypeShow | 'INIT';
 
 const INIT: ActionType = 'INIT';
+
+export const GET_ALL_START: ActionType = 'GET_ALL_START';
+export const GET_ALL_COMPLETE: ActionType = 'GET_ALL_COMPLETE';
+export const GET_ALL_FAIL: ActionType = 'GET_ALL_FAIL';
+
+export const GET_ONE_START: ActionType = 'GET_ONE_START';
+export const GET_ONE_COMPLETE: ActionType = 'GET_ONE_COMPLETE';
+export const GET_ONE_FAIL: ActionType = 'GET_ONE_FAIL';
 
 export const ADD_ITEM_START: ActionType = 'ADD_ITEM_START';
 export const ADD_ITEM_COMPLETE: ActionType = 'ADD_ITEM_COMPLETE';

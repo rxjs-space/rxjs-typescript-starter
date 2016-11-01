@@ -3,13 +3,15 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { handlers } from './handlers';
-import { stateInit, Action, State, ChangeFn, Item, WIP } from './_shared';
+import { stateInit, GET_ALL_START, Action, State, ChangeFn } from './_shared';
 import { domEvents$ } from './_dom-events-observable';
 import { inputElem, listElem, listMap } from './_dom-elements';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/scan';
 
 import 'core-js/es6/map';
+
+import './_http';
 
 
 const renderer = (state: State) => {
@@ -39,10 +41,9 @@ const state$: Observable<State> = changeFn$
 
 const intermediate_: Subscription = state$.subscribe(state$$) // state$开始向state$$推送
 
+action$$.next({type: GET_ALL_START}) // start to get data from db;
+
 const domEvents_ = domEvents$.subscribe(); // 启动domEvents$
 
 inputElem.focus();
-
-
-
 

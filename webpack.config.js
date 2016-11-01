@@ -20,15 +20,26 @@ module.exports = {
       {
         test: /\.ts$/,
         loader: 'awesome-typescript-loader'
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
       }
     ]
   },
-
   plugins: [
     new HtmlWebpackPlugin({
       title: 'RxJS Typescript Starter'
     })
   ],
-  
-  devServer: { inline: true }
+  devServer: { inline: true },
+/*
+ * polyfills or mocks for various node stuff
+ */
+  node: {
+    // console: 'empty',
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  }
 };

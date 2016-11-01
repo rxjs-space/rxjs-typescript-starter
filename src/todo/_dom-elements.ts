@@ -21,7 +21,7 @@ inputContainerElem.appendChild(addNewButtonElem);
 
 const statusContainer = document.createElement('div');
 containerElem.appendChild(statusContainer);
-statusContainer.style.height = '2em';
+statusContainer.style.minHeight = '2em';
 export const statusElem = document.createElement('div');
 statusContainer.appendChild(statusElem);
 
