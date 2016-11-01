@@ -6,12 +6,14 @@ import * as http from './_http';
 import { stateInit, Action, State, ChangeFn, 
   GET_ALL_START, GET_ALL_COMPLETE, GET_ALL_FAIL, 
   GET_ONE_START, GET_ONE_COMPLETE, GET_ONE_FAIL, 
+  DELETE_ITEM_START, DELETE_ITEM_COMPLETE, DELETE_ITEM_FAIL, 
   ADD_ITEM_START, ADD_ITEM_COMPLETE, ADD_ITEM_FAIL, 
-  DELETE_ITEM_START, DELETE_ITEM_COMPLETE, DELETE_ITEM_FAIL,
   EDIT_ITEM_SAVE_START, EDIT_ITEM_SAVE_COMPLETE, EDIT_ITEM_SAVE_FAIL, 
   Item, WIP, ActionType } from './_shared';
 import { listElem, inputElem, statusElem } from './_dom-elements';
 import { action$$ } from './index';
+
+import { DELETE_ITEM_START_handler, DELETE_ITEM_COMPLETE_handler, DELETE_ITEM_FAIL_handler} from './handlers/delete-handler';
 
 const defaultChangeFn = (lastAction: Action) => {
   return (state: State) => Object.assign({}, state, {
@@ -38,7 +40,7 @@ const fakeHttp$Fac = (payload: any) => {
 const GET_ALL_START_handler = (action: Action): ChangeFn => {
   statusElem.innerHTML = 'fetching data from server ...';
   http.getAll$Fac().subscribe((response: any) => {
-    const list: Item[] = JSON.parse(response[2])
+    const list: Item[] = response.response
     action$$.next({
       type: GET_ALL_COMPLETE,
       payload: {list}
@@ -74,7 +76,7 @@ const ADD_ITEM_START_handler = (action: Action): ChangeFn => {
   const newItemWithoutId = action.payload;
   statusElem.innerHTML = 'adding a new item ...';
   http.postForm$Fac(newItemWithoutId).subscribe((response: any) => {
-    const newItemWithId = JSON.parse(response[2]);
+    const newItemWithId = response.response;
     action$$.next({
       type: ADD_ITEM_COMPLETE,
       payload: newItemWithId
@@ -110,48 +112,6 @@ const ADD_ITEM_FAIL_handler = (action: Action): ChangeFn => {
   return defaultChangeFn(action);
 }
 
-
-const DELETE_ITEM_START_handler = (action: Action): ChangeFn => {
-  const itemIdtoDelete = action.payload;
-  statusElem.innerHTML = 'deleting item ...';
-  fakeHttp$Fac(itemIdtoDelete).take(1).subscribe((v: any) => {
-    action$$.next({
-      type: DELETE_ITEM_COMPLETE,
-      payload: action.payload
-    })
-  }, (error: any) => {
-    action$$.next({
-      type: DELETE_ITEM_FAIL,
-      payload: {
-        data: itemIdtoDelete,
-        error: error
-      }
-    })
-  })
-  return defaultChangeFn(action);
-}
-
-
-
-const DELETE_ITEM_COMPLETE_handler = (action: Action): ChangeFn => {
-  const itemIdtoDelete = action.payload;
-  statusElem.innerHTML = 'item deleted.';
-  clearStatusElem();
-  return (state: State): State => {
-    return Object.assign({}, state, {
-      items: state.items.filter((i) => i.id !== itemIdtoDelete),
-      lastAction: action
-    })
-  }
-
-
-}
-
-const DELETE_ITEM_FAIL_handler = (action: Action): ChangeFn => {
-  statusElem.innerHTML = 'item deletion failed. please try again later.';
-  clearStatusElem();
-  return defaultChangeFn(action);
-}
 
 const EDIT_ITEM_SAVE_START_handler = (action: Action): ChangeFn => {
   const itemIdandNewContent = action.payload

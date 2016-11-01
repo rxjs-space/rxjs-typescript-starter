@@ -1,40 +1,10 @@
 {
   "todos": [
     {
-      "id": 1,
-      "title": "code",
-      "timeAdded": "Mon Oct 31 2016 08:50:39 GMT-0700",
-      "status": "WIP"
-    },
-    {
-      "title": "cocode",
-      "timeAdded": "Mon Oct 31 2016 08:50:39 GMT-0700",
-      "status": "WIP",
-      "id": 3
-    },
-    {
-      "title": "from request library",
-      "timeAdded": "2016-11-01T02:34:47.933Z",
-      "status": "WIP",
-      "id": 4
-    },
-    {
-      "title": "from request library",
-      "timeAdded": "2016-11-01T02:36:02.409Z",
-      "status": "WIP",
-      "id": 5
-    },
-    {
       "title": "from request library",
       "timeAdded": "2016-11-01T02:37:31.320Z",
       "status": "WIP",
       "id": 6
-    },
-    {
-      "title": "adsfasdf",
-      "timeAdded": "2016-11-01T03:01:09.636Z",
-      "status": "WIP",
-      "id": 7
     },
     {
       "title": "adsfdasf",
@@ -43,28 +13,16 @@
       "id": 8
     },
     {
-      "title": "asdfsadfsdf",
-      "timeAdded": "2016-11-01T03:03:14.793Z",
+      "title": "adsfadqewrqewr",
+      "timeAdded": "Tue Nov 01 2016 07:19:50 GMT-0700 (Pacific Daylight Time)",
       "status": "WIP",
-      "id": 9
+      "id": 17
     },
     {
-      "title": "aerqwerqwerqwer",
-      "timeAdded": "2016-11-01T03:03:20.245Z",
+      "title": "adfasdf",
+      "timeAdded": "Tue Nov 01 2016 07:31:37 GMT-0700 (Pacific Daylight Time)",
       "status": "WIP",
-      "id": 10
-    },
-    {
-      "title": "kljlkj%3Bl",
-      "timeAdded": "2016-11-01T03:27:47.872Z",
-      "status": "WIP",
-      "id": 11
-    },
-    {
-      "title": "adsfasdfsd",
-      "timeAdded": "2016-11-01T03:32:04.653Z",
-      "status": "WIP",
-      "id": 12
+      "id": 18
     }
   ]
 }

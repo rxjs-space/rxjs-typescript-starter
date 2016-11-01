@@ -1,38 +1,68 @@
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/bindCallback';
-import * as request from 'request';
+import 'rxjs/add/observable/dom/ajax';
 
 const urlAll = 'http://localhost:3030/todos';
 
-const temp = request.get;
-
 export const getAll$Fac = () => {
-  return Observable.bindCallback(request.get)({url: urlAll})
+  return Observable.ajax({
+    url: urlAll,
+    method: 'GET'
+  })
 }
 
 export const getOne$Fac = (id: any) => {
   const urlOne = urlAll + '/' + id;
-  return Observable.bindCallback(request.get)({url: urlOne})
+  return Observable.ajax({
+    url: urlOne,
+    method: 'GET'
+  })
 }
 
 export const postForm$Fac = (form: any) => {
-  return Observable.bindCallback(request.post)({url: urlAll, form})
+  return Observable.ajax({
+    url: urlAll,
+    body: form,
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    method: 'POST'
+  })
 }
 
 export const patchOne$Fac = (id: any, form: any) => {
   const urlOne = urlAll + '/' + id;
-  return Observable.bindCallback(request.patch)({url: urlOne, form})
+  return Observable.ajax({
+    url: urlOne,
+    body: form,
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    method: 'PATCH'
+  })
 }
 
 export const deletetOne$Fac = (id: any) => {
   const urlOne = urlAll + '/' + id;
-  return Observable.bindCallback(request.del)({url: urlOne})
+  return Observable.ajax({
+    url: urlOne,
+    method: 'DELETE'
+  })
 }
 
-// const form = {
-//   title: 'from request library',
-//   timeAdded: new Date(),
-//   status: 'WIP'
+
+
+// export interface AjaxRequest {
+//     url?: string;
+//     body?: any;
+//     user?: string;
+//     async?: boolean;
+//     method?: string;
+//     headers?: Object;
+//     timeout?: number;
+//     password?: string;
+//     hasContent?: boolean;
+//     crossDomain?: boolean;
+//     withCredentials?: boolean;
+//     createXHR?: () => XMLHttpRequest;
+//     progressSubscriber?: Subscriber<any>;
+//     responseType?: string;
 // }
 
-// export const postForm$ = postForm$Fac(form);
+// Content-Type: application/x-www-form-urlencoded
