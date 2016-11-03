@@ -13,13 +13,15 @@ const clearStatusElem = () => {
 }
 
 export const DELETE_ITEM_START_handler = (action: Action): ChangeFn => {
-  const itemIdtoDelete = action.payload;
+  const itemIdtoDelete = action.payload.itemIdToDelete;
   statusElem.innerHTML = 'deleting item ...';
   deletetOne$Fac(itemIdtoDelete).subscribe((response: any) => {
     if(response.status === 200) {
       action$$.next({
         type: DELETE_ITEM_COMPLETE,
-        payload: itemIdtoDelete
+        payload: {
+          itemIdDeleted: itemIdtoDelete
+        }
       })
     }
   }, (error: any) => {
@@ -36,12 +38,12 @@ export const DELETE_ITEM_START_handler = (action: Action): ChangeFn => {
 
 
 export const DELETE_ITEM_COMPLETE_handler = (action: Action): ChangeFn => {
-  const itemIdtoDelete = action.payload;
+  const itemIdDeleted = action.payload;
   statusElem.innerHTML = 'item deleted.';
   clearStatusElem();
   return (state: State): State => {
     return Object.assign({}, state, {
-      items: state.items.filter((i) => i.id !== itemIdtoDelete),
+      items: state.items.filter((i) => i.id !== itemIdDeleted),
       lastAction: action
     })
   }

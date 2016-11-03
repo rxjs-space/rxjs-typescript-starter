@@ -43,7 +43,9 @@ const deleteClick$ = domClick$$
   .do((e: any) => {
     action$$.next({
       type: DELETE_ITEM_START,
-      payload: listMap.get(e.target.parentElement)
+      payload: {
+        itemIdToDelete: listMap.get(e.target.parentElement)
+      }
     })
   })
 

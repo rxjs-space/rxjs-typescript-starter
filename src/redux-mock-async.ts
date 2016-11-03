@@ -42,7 +42,7 @@ const FAILED: uploadState = 'FAILED';
 type ChangeFn = (state: State) => State;
 
 /*
-  define an async observable and its observer
+  define a fake http observable and its observer
 */
 const uploadHttp$: Observable<any> = Observable.create((observer: any) => {
   setTimeout(() => {
