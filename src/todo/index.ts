@@ -9,7 +9,7 @@ import 'core-js/es6/map';
 
 import { CONST, Action, State, ChangeFn, inputElem } from './_shared';
 import { handlers } from './handlers';
-import { domTriggers$ } from './triggers';
+import { triggers$ } from './triggers';
 import { renderer } from './renderer';
 
 const stateInit: State = {
@@ -33,12 +33,12 @@ const changeFn$: Observable<ChangeFn> = action$$
   .map(handlers)  // handlers will map the action into changeFn and do other necessary operations like showing messages
 
 const state$: Observable<State> = changeFn$
-  .scan((state, changeFn) => changeFn(state), state$$.getValue()) // 初始值是state$$.getValue()
+  .scan((state, changeFn) => changeFn(state), state$$.getValue()) // 初始值是state$$.getValue()，即staetInit
 
 const intermediate_: Subscription = state$.subscribe(state$$) // state$开始向state$$推送
 
 action$$.next({type: CONST.GET_ALL_START}) // start to get data from db;
 
-const domTriggers_ = domTriggers$.subscribe(); // 启动domTriggers$
+const triggers_ = triggers$.subscribe(); // 启动triggers$
 
 inputElem.focus();
