@@ -7,11 +7,19 @@ import 'rxjs/add/operator/scan';
 
 import 'core-js/es6/map';
 
+import { CONST, Action, State, ChangeFn, inputElem } from './_shared';
 import { handlers } from './handlers';
-import { stateInit, GET_ALL_START, Action, State, ChangeFn } from './_shared';
-import { domEvents$ } from './_dom-events-observable';
-import { inputElem, listElem, listMap } from './_dom-elements';
-import { renderer } from './_renderer';
+import { domTriggers$ } from './triggers';
+import { renderer } from './renderer';
+
+const stateInit: State = {
+  items: [],
+  visibility: CONST.VISIBILITY_SHOW_ALL,
+  lastActionType: CONST.INIT,
+  lastActionDetail: {
+    type: CONST.INIT
+  }
+}
 
 /*
   外部推action给action$$（外部可以是dom event、http request等等，外部推送的过程在后面的异步事件处理里面）；
@@ -22,15 +30,15 @@ const state$$: BehaviorSubject<State> = new BehaviorSubject(stateInit);
 const ultimate_: Subscription = state$$.subscribe(renderer); // will log 0 immediately
 
 const changeFn$: Observable<ChangeFn> = action$$
-  .map(handlers)  // handlers will map the action into changeFn and do the other necessary operations
+  .map(handlers)  // handlers will map the action into changeFn and do other necessary operations like showing messages
 
 const state$: Observable<State> = changeFn$
   .scan((state, changeFn) => changeFn(state), state$$.getValue()) // 初始值是state$$.getValue()
 
 const intermediate_: Subscription = state$.subscribe(state$$) // state$开始向state$$推送
 
-action$$.next({type: GET_ALL_START}) // start to get data from db;
+action$$.next({type: CONST.GET_ALL_START}) // start to get data from db;
 
-const domEvents_ = domEvents$.subscribe(); // 启动domEvents$
+const domTriggers_ = domTriggers$.subscribe(); // 启动domTriggers$
 
 inputElem.focus();

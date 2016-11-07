@@ -1,0 +1,1 @@
+export const listMap = new Map(); // maps listElem to the index of the item in the state.items

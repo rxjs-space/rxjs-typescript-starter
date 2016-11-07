@@ -1,16 +1,7 @@
-import { Action, ChangeFn, DELETE_ITEM_START, DELETE_ITEM_COMPLETE, DELETE_ITEM_FAIL, State } from '../_shared';
-import { statusElem } from '../_dom-elements';
+import { CONST, Action, ChangeFn, State, WithLastAction, statusElem, deletetOne$Fac } from '../_shared';
 import { action$$ } from '../index';
-import { deletetOne$Fac } from '../_http'
+import { defaultChangeFn, clearStatusElem } from './_shared';
 
-const defaultChangeFn = (lastAction: Action) => {
-  return (state: State) => Object.assign({}, state, {
-    lastAction: lastAction
-  })
-}
-const clearStatusElem = () => {
-  setTimeout(() => {statusElem.innerHTML = ''}, 1000)
-}
 
 export const DELETE_ITEM_START_handler = (action: Action): ChangeFn => {
   const itemIdtoDelete = action.payload.itemIdToDelete;
@@ -18,7 +9,7 @@ export const DELETE_ITEM_START_handler = (action: Action): ChangeFn => {
   deletetOne$Fac(itemIdtoDelete).subscribe((response: any) => {
     if(response.status === 200) {
       action$$.next({
-        type: DELETE_ITEM_COMPLETE,
+        type: CONST.DELETE_ITEM_COMPLETE,
         payload: {
           itemIdDeleted: itemIdtoDelete
         }
@@ -26,7 +17,7 @@ export const DELETE_ITEM_START_handler = (action: Action): ChangeFn => {
     }
   }, (error: any) => {
     action$$.next({
-      type: DELETE_ITEM_FAIL,
+      type: CONST.DELETE_ITEM_FAIL,
       payload: {
         data: itemIdtoDelete,
         error: error
@@ -38,13 +29,14 @@ export const DELETE_ITEM_START_handler = (action: Action): ChangeFn => {
 
 
 export const DELETE_ITEM_COMPLETE_handler = (action: Action): ChangeFn => {
-  const itemIdDeleted = action.payload;
+  const itemIdDeleted = action.payload.itemIdDeleted;
   statusElem.innerHTML = 'item deleted.';
   clearStatusElem();
   return (state: State): State => {
-    return Object.assign({}, state, {
+    return Object.assign({}, state, <WithLastAction>{
       items: state.items.filter((i) => i.id !== itemIdDeleted),
-      lastAction: action
+      lastActionType: action.type,
+      lastActionDetail: action
     })
   }
 }

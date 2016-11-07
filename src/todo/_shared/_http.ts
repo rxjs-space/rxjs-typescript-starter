@@ -23,7 +23,7 @@ export const postForm$Fac = (form: any) => {
   return Observable.ajax({
     url: urlAll,
     body: form,
-    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    // headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     method: 'POST'
   })
 }
@@ -33,7 +33,7 @@ export const patchOne$Fac = (id: any, form: any) => {
   return Observable.ajax({
     url: urlOne,
     body: form,
-    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    // headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     method: 'PATCH'
   })
 }
