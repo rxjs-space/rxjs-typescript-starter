@@ -12,7 +12,7 @@ import { action$$ } from '../index';
 import { domDblClick$$, domClick$$, domKeyup$$ } from './_shared';
 
 // 在某个项目的input element上面双击，开始编辑
-export const edit$ = domDblClick$$
+export const edit$$ = domDblClick$$
   .pluck('target')
   .filter((elem: HTMLInputElement) => elem.type === 'text' && !!listMap.get(elem.parentElement))
   .do((elem: HTMLInputElement) => {

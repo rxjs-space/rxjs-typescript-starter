@@ -6,7 +6,7 @@ import { listMap, CONST } from '../_shared';
 
 import { domClick$$ } from './_shared';
 
-export const toggleComplete$ = domClick$$
+export const toggleComplete$$ = domClick$$
   .filter((event: any) => {
     return event.target.type === 'checkbox'  && !!listMap.get(event.target.parentElement)
   })

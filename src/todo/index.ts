@@ -27,7 +27,7 @@ const stateInit: State = {
 */
 export const action$$: Subject<Action> = new Subject()
 const state$$: BehaviorSubject<State> = new BehaviorSubject(stateInit);
-const ultimate_: Subscription = state$$.subscribe(renderer); // will log contents of stateIit immediately
+const ultimate_: Subscription = state$$.subscribe(renderer); // will log stateInit immediately
 
 const changeFn$: Observable<ChangeFn> = action$$
   .map(handlers)  // handlers will map the action into changeFn and do other necessary operations like showing messages
@@ -37,9 +37,9 @@ const state$: Observable<State> = changeFn$
 
 const intermediate_: Subscription = state$.subscribe(state$$) // state$开始向state$$推送
 
-const domTriggers_ = domTriggers$.subscribe(); // domTriggers$
-
-inputElem.focus();
+const domTriggers_ = domTriggers$.subscribe(); // 启动domTriggers$
 
 action$$.next({type: CONST.GET_ALL_START}) // start to send actino to action$$;
+
+inputElem.focus();
 

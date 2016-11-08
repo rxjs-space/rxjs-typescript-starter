@@ -6,7 +6,7 @@ import { action$$ } from '../index';
 import { CONST, listMap } from '../_shared';
 import { domClick$$ } from './_shared';
 
-export const delete$ = domClick$$
+export const delete$$ = domClick$$
   .filter((e: any) => e.target.innerHTML === CONST.DELETE_BUTTON_TEXT && e.target.tagName === 'BUTTON' && !!listMap.get(e.target.parentElement))
   .do((e: any) => {
     action$$.next({
