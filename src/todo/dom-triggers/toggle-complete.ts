@@ -1,8 +1,8 @@
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/do';
 
-import { action$$ } from '../../index';
-import { listMap, CONST } from '../../_shared';
+import { action$$ } from '../index';
+import { listMap, CONST } from '../_shared';
 
 import { domClick$$ } from './_shared';
 

@@ -3,8 +3,8 @@ import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/do';
 
-import { action$$ } from '../../index';
-import { CONST, Item, addNewButtonElem, inputElem } from '../../_shared';
+import { action$$ } from '../index';
+import { CONST, Item, addNewButtonElem, inputElem } from '../_shared';
 import { domClick$$, domKeyup$$ } from './_shared';
 
 const addNewClick$ = domClick$$.filter((event: any) => event.target === addNewButtonElem);

@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/do';
 
-import { action$$ } from '../../index';
-import { CONST } from '../../_shared';
+import { action$$ } from '../index';
+import { CONST } from '../_shared';
 
 import { visibilityChange$$ } from './_shared';
 

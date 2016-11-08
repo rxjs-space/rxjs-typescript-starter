@@ -20,7 +20,7 @@ export const renderer = (state: State) => {
     itemElem.appendChild(content);
 
     const buttonX = document.createElement('button');
-    buttonX.innerHTML = 'X';
+    buttonX.innerHTML = CONST.DELETE_BUTTON_TEXT;
     itemElem.appendChild(buttonX);
 
     listMap.set(itemElem, item.id);

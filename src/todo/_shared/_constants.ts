@@ -32,3 +32,6 @@ export const VISIBILITY_SHOW_ALL: VisibilityType = 'SHOW_ALL';
 export const VISIBILITY_SHOW_UNDONE: VisibilityType = 'SHOW_UNDONE';
 
 export const NAME_OF_VISIBILITY_RADIO = 'VISIBILITY';
+
+export const CONFIRM_BUTTON_TEXT = '&#10003;';
+export const DELETE_BUTTON_TEXT = 'X';

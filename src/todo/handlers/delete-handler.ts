@@ -7,16 +7,16 @@ import { defaultChangeFnFac, clearStatusElem } from './_shared';
  */
 
 const buttonXs = Array.prototype.slice.call(document.querySelectorAll('button'), 0)
-  .filter((button: HTMLButtonElement) => button.innerHTML === 'X')
+  .filter((button: HTMLButtonElement) => button.innerHTML === CONST.DELETE_BUTTON_TEXT)
 
 const DELETE_ITEM_START_handler_dom = () => {
   const buttonXs = Array.prototype.slice.call(document.querySelectorAll('button'), 0)
-    .filter((button: HTMLButtonElement) => button.innerHTML === 'X')
+    .filter((button: HTMLButtonElement) => button.innerHTML === CONST.DELETE_BUTTON_TEXT)
   buttonXs.forEach((button: HTMLButtonElement) =>button.disabled = true);
   statusElem.innerHTML = 'deleting the item ...';
 }
 
-const DELETE_ITEM_START_handler_async = (itemIdtoDelete: any) => {
+const DELETE_ITEM_START_handler_ajax = (itemIdtoDelete: any) => {
   deletetOne$Fac(itemIdtoDelete).subscribe((response: any) => {
     action$$.next({
       type: CONST.DELETE_ITEM_COMPLETE,
@@ -36,7 +36,7 @@ const DELETE_ITEM_START_handler_async = (itemIdtoDelete: any) => {
 }
 export const DELETE_ITEM_START_handler = (action: Action): ChangeFn => {
   DELETE_ITEM_START_handler_dom();
-  DELETE_ITEM_START_handler_async(action.payload.itemIdToDelete);
+  DELETE_ITEM_START_handler_ajax(action.payload.itemIdToDelete);
   return defaultChangeFnFac(action);
 }
 
@@ -48,7 +48,7 @@ const DELETE_ITEM_COMPLETE_handler_dom = () => {
   statusElem.innerHTML = 'item deleted.';
   clearStatusElem();
   const buttonXs = Array.prototype.slice.call(document.querySelectorAll('button'), 0)
-    .filter((button: HTMLButtonElement) => button.innerHTML === 'X')
+    .filter((button: HTMLButtonElement) => button.innerHTML === CONST.DELETE_BUTTON_TEXT)
   buttonXs.forEach((button: HTMLButtonElement) =>button.disabled = false);
 }
 
@@ -74,7 +74,7 @@ const DELETE_ITEM_FAIL_handler_dom = () => {
   statusElem.innerHTML = 'item deletion failed. please try again later.';
   clearStatusElem();
   const buttonXs = Array.prototype.slice.call(document.querySelectorAll('button'), 0)
-    .filter((button: HTMLButtonElement) => button.innerHTML === 'X')
+    .filter((button: HTMLButtonElement) => button.innerHTML === CONST.DELETE_BUTTON_TEXT)
   buttonXs.forEach((button: HTMLButtonElement) =>button.disabled = false);
 }
 

@@ -9,7 +9,7 @@ import { defaultChangeFnFac, clearStatusElem } from './_shared';
 const GET_ALL_START_handler_dom = () => {
   statusElem.innerHTML = 'fetching data from server ...';
 }
-const GET_ALL_START_handler_async = () => {
+const GET_ALL_START_handler_ajax = () => {
   getAll$Fac().subscribe((response: any) => {
     const list: Item[] = response.response
     action$$.next({
@@ -26,7 +26,7 @@ const GET_ALL_START_handler_async = () => {
 
 export const GET_ALL_START_handler = (action: Action): ChangeFn => {
   GET_ALL_START_handler_dom();
-  GET_ALL_START_handler_async();
+  GET_ALL_START_handler_ajax();
   return defaultChangeFnFac(action)
 }
 

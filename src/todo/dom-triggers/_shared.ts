@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/fromEvent';
 
-import { visibilityFormElem } from '../../_shared';
+import { visibilityFormElem } from '../_shared';
 
 const domClick$ = Observable.fromEvent(document, 'click');
 export const domClick$$ = new Subject();

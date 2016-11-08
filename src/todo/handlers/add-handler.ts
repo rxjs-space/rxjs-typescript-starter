@@ -11,7 +11,7 @@ const ADD_ITEM_START_handler_dom = () => {
   statusElem.innerHTML = 'adding a new item ...';
 }
 
-const ADD_ITEM_START_handler_async = (newItemWithoutId: Item) => {
+const ADD_ITEM_START_handler_ajax = (newItemWithoutId: Item) => {
   postForm$Fac(newItemWithoutId).subscribe((response: any) => {
     const newItemWithId = response.response;
     action$$.next({
@@ -33,7 +33,7 @@ const ADD_ITEM_START_handler_async = (newItemWithoutId: Item) => {
 
 export const ADD_ITEM_START_handler = (action: Action): ChangeFn => {
   ADD_ITEM_START_handler_dom();
-  ADD_ITEM_START_handler_async(action.payload.newItemWithoutId)
+  ADD_ITEM_START_handler_ajax(action.payload.newItemWithoutId)
   return defaultChangeFnFac(action)
 }
 

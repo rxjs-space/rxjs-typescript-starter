@@ -10,7 +10,7 @@ const EDIT_ITEM_SAVE_START_handler_dom = () => {
   statusElem.innerHTML = 'updating the item ...';
 }
 
-const EDIT_ITEM_SAVE_START_handler_async = (id: any, form: any) => {
+const EDIT_ITEM_SAVE_START_handler_ajax = (id: any, form: any) => {
   patchOne$Fac(id, form)
     .subscribe((response: any) => {
       action$$.next({
@@ -35,7 +35,7 @@ const EDIT_ITEM_SAVE_START_handler_async = (id: any, form: any) => {
 
 export const EDIT_ITEM_SAVE_START_handler = (action: Action): ChangeFn => {
   EDIT_ITEM_SAVE_START_handler_dom();
-  EDIT_ITEM_SAVE_START_handler_async(action.payload.id, action.payload.form);
+  EDIT_ITEM_SAVE_START_handler_ajax(action.payload.id, action.payload.form);
   return defaultChangeFnFac(action);
 }
 
