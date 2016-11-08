@@ -8,8 +8,6 @@ const domClick$ = Observable.fromEvent(document, 'click');
 export const domClick$$ = new Subject();
 domClick$.subscribe(domClick$$);
 
-
-
 const domDblClick$ = Observable.fromEvent(document, 'dblclick');
 export const domDblClick$$ = new Subject();
 domDblClick$.subscribe(domDblClick$$);

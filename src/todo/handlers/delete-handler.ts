@@ -1,20 +1,29 @@
 import { CONST, Action, ChangeFn, State, WithLastAction, statusElem, deletetOne$Fac } from '../_shared';
 import { action$$ } from '../index';
-import { defaultChangeFn, clearStatusElem } from './_shared';
+import { defaultChangeFnFac, clearStatusElem } from './_shared';
 
+/*
+ * DELETE_ITEM_START_handler part
+ */
 
-export const DELETE_ITEM_START_handler = (action: Action): ChangeFn => {
-  const itemIdtoDelete = action.payload.itemIdToDelete;
-  statusElem.innerHTML = 'deleting item ...';
+const buttonXs = Array.prototype.slice.call(document.querySelectorAll('button'), 0)
+  .filter((button: HTMLButtonElement) => button.innerHTML === 'X')
+
+const DELETE_ITEM_START_handler_dom = () => {
+  const buttonXs = Array.prototype.slice.call(document.querySelectorAll('button'), 0)
+    .filter((button: HTMLButtonElement) => button.innerHTML === 'X')
+  buttonXs.forEach((button: HTMLButtonElement) =>button.disabled = true);
+  statusElem.innerHTML = 'deleting the item ...';
+}
+
+const DELETE_ITEM_START_handler_async = (itemIdtoDelete: any) => {
   deletetOne$Fac(itemIdtoDelete).subscribe((response: any) => {
-    if(response.status === 200) {
-      action$$.next({
-        type: CONST.DELETE_ITEM_COMPLETE,
-        payload: {
-          itemIdDeleted: itemIdtoDelete
-        }
-      })
-    }
+    action$$.next({
+      type: CONST.DELETE_ITEM_COMPLETE,
+      payload: {
+        itemIdDeleted: itemIdtoDelete
+      }
+    })
   }, (error: any) => {
     action$$.next({
       type: CONST.DELETE_ITEM_FAIL,
@@ -24,25 +33,52 @@ export const DELETE_ITEM_START_handler = (action: Action): ChangeFn => {
       }
     })
   })
-  return defaultChangeFn(action);
+}
+export const DELETE_ITEM_START_handler = (action: Action): ChangeFn => {
+  DELETE_ITEM_START_handler_dom();
+  DELETE_ITEM_START_handler_async(action.payload.itemIdToDelete);
+  return defaultChangeFnFac(action);
 }
 
+/*
+ * DELETE_ITEM_COMPLETE_handler part
+ */
 
-export const DELETE_ITEM_COMPLETE_handler = (action: Action): ChangeFn => {
-  const itemIdDeleted = action.payload.itemIdDeleted;
+const DELETE_ITEM_COMPLETE_handler_dom = () => {
   statusElem.innerHTML = 'item deleted.';
   clearStatusElem();
+  const buttonXs = Array.prototype.slice.call(document.querySelectorAll('button'), 0)
+    .filter((button: HTMLButtonElement) => button.innerHTML === 'X')
+  buttonXs.forEach((button: HTMLButtonElement) =>button.disabled = false);
+}
+
+const DELETE_ITEM_COMPLETE_handler_changeFnFac = (action: Action) => {
   return (state: State): State => {
     return Object.assign({}, state, <WithLastAction>{
-      items: state.items.filter((i) => i.id !== itemIdDeleted),
+      items: state.items.filter((i) => i.id !== action.payload.itemIdDeleted),
       lastActionType: action.type,
       lastActionDetail: action
     })
   }
 }
+export const DELETE_ITEM_COMPLETE_handler = (action: Action): ChangeFn => {
+  DELETE_ITEM_COMPLETE_handler_dom();
+  return DELETE_ITEM_COMPLETE_handler_changeFnFac(action);
+}
 
-export const DELETE_ITEM_FAIL_handler = (action: Action): ChangeFn => {
+/*
+ * DELETE_ITEM_FAIL_handler part
+ */
+
+const DELETE_ITEM_FAIL_handler_dom = () => {
   statusElem.innerHTML = 'item deletion failed. please try again later.';
   clearStatusElem();
-  return defaultChangeFn(action);
+  const buttonXs = Array.prototype.slice.call(document.querySelectorAll('button'), 0)
+    .filter((button: HTMLButtonElement) => button.innerHTML === 'X')
+  buttonXs.forEach((button: HTMLButtonElement) =>button.disabled = false);
+}
+
+export const DELETE_ITEM_FAIL_handler = (action: Action): ChangeFn => {
+  DELETE_ITEM_FAIL_handler_dom();
+  return defaultChangeFnFac(action);
 }

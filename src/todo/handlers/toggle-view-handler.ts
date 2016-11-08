@@ -1,4 +1,3 @@
-
 import { Action, ChangeFn, State, CONST, Item, WithLastAction } from '../_shared';
 
 export const TOGGLE_VIEW_handler = (action: Action): ChangeFn => {

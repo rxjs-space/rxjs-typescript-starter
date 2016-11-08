@@ -1,10 +1,16 @@
 import { CONST, Action, ChangeFn, State, Item, WithLastAction, statusElem, patchOne$Fac } from '../_shared';
 import { action$$ } from '../index';
-import { defaultChangeFn, clearStatusElem } from './_shared';
+import { defaultChangeFnFac, clearStatusElem } from './_shared';
 
-export const EDIT_ITEM_SAVE_START_handler = (action: Action): ChangeFn => {
-  const { id, form } = action.payload;
-  statusElem.innerHTML = 'updating the item ...'
+/*
+ * EDIT_ITEM_SAVE_START_handler part
+ */
+
+const EDIT_ITEM_SAVE_START_handler_dom = () => {
+  statusElem.innerHTML = 'updating the item ...';
+}
+
+const EDIT_ITEM_SAVE_START_handler_async = (id: any, form: any) => {
   patchOne$Fac(id, form)
     .subscribe((response: any) => {
       action$$.next({
@@ -25,12 +31,24 @@ export const EDIT_ITEM_SAVE_START_handler = (action: Action): ChangeFn => {
         }
       })
     })
-  return defaultChangeFn(action);
 }
 
-export const EDIT_ITEM_SAVE_COMPLETE_handler = (action: Action): ChangeFn => {
-  statusElem.innerHTML = 'edited item saved.'
+export const EDIT_ITEM_SAVE_START_handler = (action: Action): ChangeFn => {
+  EDIT_ITEM_SAVE_START_handler_dom();
+  EDIT_ITEM_SAVE_START_handler_async(action.payload.id, action.payload.form);
+  return defaultChangeFnFac(action);
+}
+
+/*
+ * EDIT_ITEM_SAVE_COMPLETE_handler part
+ */
+
+const EDIT_ITEM_SAVE_COMPLETE_handler_dom = () => {
+  statusElem.innerHTML = 'item updated.'
   clearStatusElem();
+}
+
+const EDIT_ITEM_SAVE_COMPLETE_handler_changeFnFac = (action: Action): ChangeFn => {
   const { id, item } = action.payload;
   return (state: State) => {
     const newVer = item;
@@ -47,8 +65,21 @@ export const EDIT_ITEM_SAVE_COMPLETE_handler = (action: Action): ChangeFn => {
   }
 }
 
-export const EDIT_ITEM_SAVE_FAIL_handler = (action: Action): ChangeFn => {
+export const EDIT_ITEM_SAVE_COMPLETE_handler = (action: Action): ChangeFn => {
+  EDIT_ITEM_SAVE_COMPLETE_handler_dom();
+  return EDIT_ITEM_SAVE_COMPLETE_handler_changeFnFac(action);
+}
+
+/*
+ * EDIT_ITEM_SAVE_FAIL_handler part
+ */
+
+const EDIT_ITEM_SAVE_FAIL_handler_dom = () => {
   statusElem.innerHTML = 'saving the edited item failed. please try again later.'
   clearStatusElem();
-  return defaultChangeFn(action);
+}
+
+export const EDIT_ITEM_SAVE_FAIL_handler = (action: Action): ChangeFn => {
+  EDIT_ITEM_SAVE_FAIL_handler_dom();
+  return defaultChangeFnFac(action);
 }

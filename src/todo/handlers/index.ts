@@ -1,5 +1,5 @@
 import { CONST, Action, ChangeFn } from '../_shared';
-import { defaultChangeFn } from './_shared';
+import { defaultChangeFnFac } from './_shared';
 import { GET_ALL_START_handler, GET_ALL_COMPLETE_handler, GET_ALL_FAIL_handler } from './get-all-handler';
 import { ADD_ITEM_START_handler, ADD_ITEM_COMPLETE_handler, ADD_ITEM_FAIL_handler } from './add-handler';
 import { DELETE_ITEM_START_handler, DELETE_ITEM_COMPLETE_handler, DELETE_ITEM_FAIL_handler } from './delete-handler';
@@ -7,7 +7,7 @@ import { EDIT_ITEM_SAVE_START_handler, EDIT_ITEM_SAVE_COMPLETE_handler, EDIT_ITE
 import { TOGGLE_VIEW_handler } from './toggle-view-handler';
 
 const DEFAULT_handler = (action: Action): ChangeFn => {
-  return defaultChangeFn(action);
+  return defaultChangeFnFac(action);
 }
 
 export const handlers = (action: Action): ChangeFn => {
