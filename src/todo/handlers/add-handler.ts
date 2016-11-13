@@ -31,7 +31,7 @@ const ADD_ITEM_START_handler_ajax = (newItemWithoutId: Item) => {
   })
 }
 
-export const ADD_ITEM_START_handler = (action: Action): ChangeFn => {
+const ADD_ITEM_START_handler = (action: Action): ChangeFn => {
   ADD_ITEM_START_handler_dom();
   ADD_ITEM_START_handler_ajax(action.payload.newItemWithoutId)
   return defaultChangeFnFac(action)
@@ -59,7 +59,7 @@ const ADD_ITEM_COMPLETE_handler_changFnFac = (action: Action): ChangeFn => {
   }
 }
 
-export const ADD_ITEM_COMPLETE_handler = (action: Action): ChangeFn => {
+const ADD_ITEM_COMPLETE_handler = (action: Action): ChangeFn => {
   ADD_ITEM_COMPLETE_handler_dom();
   return ADD_ITEM_COMPLETE_handler_changFnFac(action)
 }
@@ -75,7 +75,16 @@ const ADD_ITEM_FAIL_handler_dom = () => {
   addNewButtonElem.disabled = false;
 }
 
-export const ADD_ITEM_FAIL_handler = (action: Action): ChangeFn => {
+const ADD_ITEM_FAIL_handler = (action: Action): ChangeFn => {
   ADD_ITEM_FAIL_handler_dom();
   return defaultChangeFnFac(action);
+}
+
+
+export const ADD_ITEM_handlers = (action: Action): ChangeFn => {
+  switch (action.type) {
+    case CONST.ADD_ITEM_START: return ADD_ITEM_START_handler(action);
+    case CONST.ADD_ITEM_COMPLETE: return ADD_ITEM_COMPLETE_handler(action);
+    case CONST.ADD_ITEM_FAIL: return ADD_ITEM_FAIL_handler(action);
+  }
 }

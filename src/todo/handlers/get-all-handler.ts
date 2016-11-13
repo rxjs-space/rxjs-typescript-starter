@@ -24,7 +24,7 @@ const GET_ALL_START_handler_ajax = () => {
   })
 }
 
-export const GET_ALL_START_handler = (action: Action): ChangeFn => {
+const GET_ALL_START_handler = (action: Action): ChangeFn => {
   GET_ALL_START_handler_dom();
   GET_ALL_START_handler_ajax();
   return defaultChangeFnFac(action)
@@ -45,7 +45,7 @@ const GET_ALL_COMPLETE_handler_changeFn = (action: Action): ChangeFn => {
     lastActionDetail: action
   })
 }
-export const GET_ALL_COMPLETE_handler = (action: Action): ChangeFn => {
+const GET_ALL_COMPLETE_handler = (action: Action): ChangeFn => {
   GET_ALL_COMPLETE_handler_dom();
   return GET_ALL_COMPLETE_handler_changeFn(action);
 }
@@ -61,7 +61,16 @@ const GET_ALL_FAIL_handler_dom = (error: any) => {
   clearStatusElem();
 }
 
-export const GET_ALL_FAIL_handler = (action: Action): ChangeFn => {
+const GET_ALL_FAIL_handler = (action: Action): ChangeFn => {
   GET_ALL_FAIL_handler_dom(action.payload.error);
   return defaultChangeFnFac(action);
+}
+
+
+export const GET_ALL_handlers = (action: Action): ChangeFn => {
+  switch (action.type) {
+    case CONST.GET_ALL_START: return GET_ALL_START_handler(action);
+    case CONST.GET_ALL_COMPLETE: return GET_ALL_COMPLETE_handler(action);
+    case CONST.GET_ALL_FAIL: return GET_ALL_FAIL_handler(action);
+  }
 }

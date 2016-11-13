@@ -33,7 +33,7 @@ const EDIT_ITEM_SAVE_START_handler_ajax = (id: any, form: any) => {
     })
 }
 
-export const EDIT_ITEM_SAVE_START_handler = (action: Action): ChangeFn => {
+const EDIT_ITEM_SAVE_START_handler = (action: Action): ChangeFn => {
   EDIT_ITEM_SAVE_START_handler_dom();
   EDIT_ITEM_SAVE_START_handler_ajax(action.payload.id, action.payload.form);
   return defaultChangeFnFac(action);
@@ -65,7 +65,7 @@ const EDIT_ITEM_SAVE_COMPLETE_handler_changeFnFac = (action: Action): ChangeFn =
   }
 }
 
-export const EDIT_ITEM_SAVE_COMPLETE_handler = (action: Action): ChangeFn => {
+const EDIT_ITEM_SAVE_COMPLETE_handler = (action: Action): ChangeFn => {
   EDIT_ITEM_SAVE_COMPLETE_handler_dom();
   return EDIT_ITEM_SAVE_COMPLETE_handler_changeFnFac(action);
 }
@@ -79,7 +79,16 @@ const EDIT_ITEM_SAVE_FAIL_handler_dom = () => {
   clearStatusElem();
 }
 
-export const EDIT_ITEM_SAVE_FAIL_handler = (action: Action): ChangeFn => {
+const EDIT_ITEM_SAVE_FAIL_handler = (action: Action): ChangeFn => {
   EDIT_ITEM_SAVE_FAIL_handler_dom();
   return defaultChangeFnFac(action);
+}
+
+
+export const EDIT_ITEM_SAVE_handlers = (action: Action): ChangeFn => {
+  switch (action.type) {
+    case CONST.EDIT_ITEM_SAVE_START: return EDIT_ITEM_SAVE_START_handler(action);
+    case CONST.EDIT_ITEM_SAVE_COMPLETE: return EDIT_ITEM_SAVE_COMPLETE_handler(action);
+    case CONST.EDIT_ITEM_SAVE_FAIL: return EDIT_ITEM_SAVE_FAIL_handler(action);
+  }
 }

@@ -34,7 +34,7 @@ const DELETE_ITEM_START_handler_ajax = (itemIdtoDelete: any) => {
     })
   })
 }
-export const DELETE_ITEM_START_handler = (action: Action): ChangeFn => {
+const DELETE_ITEM_START_handler = (action: Action): ChangeFn => {
   DELETE_ITEM_START_handler_dom();
   DELETE_ITEM_START_handler_ajax(action.payload.itemIdToDelete);
   return defaultChangeFnFac(action);
@@ -61,7 +61,7 @@ const DELETE_ITEM_COMPLETE_handler_changeFnFac = (action: Action) => {
     })
   }
 }
-export const DELETE_ITEM_COMPLETE_handler = (action: Action): ChangeFn => {
+const DELETE_ITEM_COMPLETE_handler = (action: Action): ChangeFn => {
   DELETE_ITEM_COMPLETE_handler_dom();
   return DELETE_ITEM_COMPLETE_handler_changeFnFac(action);
 }
@@ -78,7 +78,15 @@ const DELETE_ITEM_FAIL_handler_dom = () => {
   buttonXs.forEach((button: HTMLButtonElement) =>button.disabled = false);
 }
 
-export const DELETE_ITEM_FAIL_handler = (action: Action): ChangeFn => {
+const DELETE_ITEM_FAIL_handler = (action: Action): ChangeFn => {
   DELETE_ITEM_FAIL_handler_dom();
   return defaultChangeFnFac(action);
+}
+
+export const DELETE_ITEM_handlers = (action: Action): ChangeFn => {
+  switch (action.type) {
+    case CONST.DELETE_ITEM_START: return DELETE_ITEM_START_handler(action);
+    case CONST.DELETE_ITEM_COMPLETE: return DELETE_ITEM_COMPLETE_handler(action);
+    case CONST.DELETE_ITEM_FAIL: return DELETE_ITEM_FAIL_handler(action);
+  }
 }
