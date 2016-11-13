@@ -10,21 +10,70 @@ const DEFAULT_handler = (action: Action): ChangeFn => {
   return defaultChangeFnFac(action);
 }
 
-export const handlers = (action: Action): ChangeFn => {
+const GET_ALL_handlers = (action: Action): ChangeFn => {
   switch (action.type) {
     case CONST.GET_ALL_START: return GET_ALL_START_handler(action);
     case CONST.GET_ALL_COMPLETE: return GET_ALL_COMPLETE_handler(action);
     case CONST.GET_ALL_FAIL: return GET_ALL_FAIL_handler(action);
+  }
+}
+
+const ADD_ITEM_handlers = (action: Action): ChangeFn => {
+  switch (action.type) {
     case CONST.ADD_ITEM_START: return ADD_ITEM_START_handler(action);
     case CONST.ADD_ITEM_COMPLETE: return ADD_ITEM_COMPLETE_handler(action);
     case CONST.ADD_ITEM_FAIL: return ADD_ITEM_FAIL_handler(action);
+  }
+}
+
+const DELETE_ITEM_handlers = (action: Action): ChangeFn => {
+  switch (action.type) {
     case CONST.DELETE_ITEM_START: return DELETE_ITEM_START_handler(action);
     case CONST.DELETE_ITEM_COMPLETE: return DELETE_ITEM_COMPLETE_handler(action);
     case CONST.DELETE_ITEM_FAIL: return DELETE_ITEM_FAIL_handler(action);
+  }
+}
+
+const EDIT_ITEM_SAVE_handlers = (action: Action): ChangeFn => {
+  switch (action.type) {
     case CONST.EDIT_ITEM_SAVE_START: return EDIT_ITEM_SAVE_START_handler(action);
     case CONST.EDIT_ITEM_SAVE_COMPLETE: return EDIT_ITEM_SAVE_COMPLETE_handler(action);
     case CONST.EDIT_ITEM_SAVE_FAIL: return EDIT_ITEM_SAVE_FAIL_handler(action);
-    case CONST.TOGGLE_VIEW: return TOGGLE_VIEW_handler(action);
+  }
+}
+
+export const handlers = (action: Action): ChangeFn => {
+  switch (true) {
+    case CONST.GET_ALL.indexOf(action.type) >= 0 : return GET_ALL_handlers(action);
+    case CONST.ADD_ITEM.indexOf(action.type) >= 0 : return ADD_ITEM_handlers(action);
+    case CONST.DELETE_ITEM.indexOf(action.type) >= 0 : return DELETE_ITEM_handlers(action);
+    case CONST.EDIT_ITEM_SAVE.indexOf(action.type) >= 0 : return EDIT_ITEM_SAVE_handlers(action);
+
+    case action.type === CONST.TOGGLE_VIEW: return TOGGLE_VIEW_handler(action);
     default: return DEFAULT_handler(action);
   }
 }
+
+
+/*
+ * put all handlers in one switch block
+ */
+
+// export const handlers = (action: Action): ChangeFn => {
+//   switch (action.type) {
+//     case CONST.GET_ALL_START: return GET_ALL_START_handler(action);
+//     case CONST.GET_ALL_COMPLETE: return GET_ALL_COMPLETE_handler(action);
+//     case CONST.GET_ALL_FAIL: return GET_ALL_FAIL_handler(action);
+//     case CONST.ADD_ITEM_START: return ADD_ITEM_START_handler(action);
+//     case CONST.ADD_ITEM_COMPLETE: return ADD_ITEM_COMPLETE_handler(action);
+//     case CONST.ADD_ITEM_FAIL: return ADD_ITEM_FAIL_handler(action);
+//     case CONST.DELETE_ITEM_START: return DELETE_ITEM_START_handler(action);
+//     case CONST.DELETE_ITEM_COMPLETE: return DELETE_ITEM_COMPLETE_handler(action);
+//     case CONST.DELETE_ITEM_FAIL: return DELETE_ITEM_FAIL_handler(action);
+//     case CONST.EDIT_ITEM_SAVE_START: return EDIT_ITEM_SAVE_START_handler(action);
+//     case CONST.EDIT_ITEM_SAVE_COMPLETE: return EDIT_ITEM_SAVE_COMPLETE_handler(action);
+//     case CONST.EDIT_ITEM_SAVE_FAIL: return EDIT_ITEM_SAVE_FAIL_handler(action);
+//     case CONST.TOGGLE_VIEW: return TOGGLE_VIEW_handler(action);
+//     default: return DEFAULT_handler(action);
+//   }
+// }
