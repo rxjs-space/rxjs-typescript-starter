@@ -11,4 +11,4 @@ To run the app:
 
 Reference: 
 1. [应用RxJS模拟redux](https://wx.angular.cn/library/article/%E5%BA%94%E7%94%A8RxJS%E6%A8%A1%E6%8B%9Fredux)
-2. [应用RxJS模拟redux - 第二集](https://github.com/rxjs-space/notes/wiki/Mock-Redux-with-RxJS---Episode-2---Todo-App)
+2. [应用RxJS模拟redux - 第二集](https://github.com/rxjs-space/notes/wiki/%E5%BA%94%E7%94%A8RxJS%E6%A8%A1%E6%8B%9FRedux---%E7%AC%AC%E4%BA%8C%E9%9B%86---Todo-App)
